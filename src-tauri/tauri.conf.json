@@ -1,7 +1,7 @@
 {
   "productName": "定时关机管理",
   "version": "1.0.0",
-  "identifier": "com.timing.app",
+  "identifier": "com.timing",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -22,10 +22,6 @@
     ],
     "security": {
       "csp": null
-    },
-    "systemTray": {
-      "iconPath": "icons/icon.png",
-      "iconAsTemplate": true
     }
   },
   "bundle": {

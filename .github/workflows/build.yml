@@ -70,7 +70,6 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
-          release: ${{ github.event_name == 'release' }}
           
       - name: Upload artifacts
         if: github.event_name != 'release'
