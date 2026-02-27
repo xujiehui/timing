@@ -12,7 +12,7 @@ use storage::{AppSettings, load_settings, save_settings};
 use std::sync::Arc;
 use tauri::{Manager, State, AppHandle};
 use tauri::menu::{Menu, MenuItem};
-use tauri_plugin_notification::NotificationBuilder;
+use tauri_plugin_notification::NotificationExt;
 use tokio::sync::Mutex;
 
 #[derive(Clone)]
@@ -178,7 +178,8 @@ fn setup_tray(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn send_notification(app: &AppHandle, message: &str) {
-    let _ = NotificationBuilder::new(app.clone())
+    let _ = app.notification()
+        .builder()
         .title("定时任务提醒")
         .body(message)
         .show();
