@@ -56,11 +56,11 @@ export default function TaskForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-8">
       {/* 操作类型选择 */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-          选择操作类型：
+        <label className="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-4">
+          选择操作类型
         </label>
         <div className="grid grid-cols-5 gap-3">
           {actionOptions.map((option) => {
@@ -71,14 +71,17 @@ export default function TaskForm() {
                 key={option.value}
                 type="button"
                 onClick={() => setFormData({ ...formData, action: option.value })}
-                className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all ${
+                className={`group flex flex-col items-center justify-center p-5 rounded-xl border-2 transition-all duration-200 hover:scale-105 ${
                   isSelected
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
-                    : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                    ? 'border-primary-500 bg-gradient-primary text-white shadow-primary'
+                    : 'border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 hover:border-primary-300 dark:hover:border-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20'
                 }`}
               >
-                <Icon size={24} className="mb-2" />
-                <span className="text-sm font-medium">{option.label}</span>
+                <Icon 
+                  size={28} 
+                  className={`mb-2 transition-transform duration-200 ${isSelected ? 'scale-110' : 'group-hover:scale-110'}`} 
+                />
+                <span className="text-sm font-semibold">{option.label}</span>
               </button>
             );
           })}
@@ -87,29 +90,33 @@ export default function TaskForm() {
 
       {/* 时间类型选择 */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-          设置时间：
+        <label className="block text-base font-semibold text-gray-800 dark:text-gray-200 mb-4">
+          设置时间
         </label>
-        <div className="flex gap-4 mb-4">
-          <label className="flex items-center">
+        <div className="flex gap-4 mb-5">
+          <label className="flex items-center cursor-pointer group">
             <input
               type="radio"
               value="absolute"
               checked={formData.timeType === 'absolute'}
               onChange={(e) => setFormData({ ...formData, timeType: e.target.value as 'absolute' | 'relative' })}
-              className="mr-2"
+              className="mr-2 w-4 h-4 text-primary-600 focus:ring-primary-500 focus:ring-2 cursor-pointer"
             />
-            <span className="text-sm text-gray-700 dark:text-gray-300">绝对时间</span>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+              绝对时间
+            </span>
           </label>
-          <label className="flex items-center">
+          <label className="flex items-center cursor-pointer group">
             <input
               type="radio"
               value="relative"
               checked={formData.timeType === 'relative'}
               onChange={(e) => setFormData({ ...formData, timeType: e.target.value as 'absolute' | 'relative' })}
-              className="mr-2"
+              className="mr-2 w-4 h-4 text-primary-600 focus:ring-primary-500 focus:ring-2 cursor-pointer"
             />
-            <span className="text-sm text-gray-700 dark:text-gray-300">相对时间</span>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+              相对时间
+            </span>
           </label>
         </div>
 
@@ -119,14 +126,14 @@ export default function TaskForm() {
               type="date"
               value={formData.absoluteDate}
               onChange={(e) => setFormData({ ...formData, absoluteDate: e.target.value })}
-              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 shadow-soft"
               required
             />
             <input
               type="time"
               value={formData.absoluteTime}
               onChange={(e) => setFormData({ ...formData, absoluteTime: e.target.value })}
-              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 shadow-soft"
               required
             />
           </div>
@@ -137,13 +144,13 @@ export default function TaskForm() {
               min="1"
               value={formData.relativeValue}
               onChange={(e) => setFormData({ ...formData, relativeValue: parseInt(e.target.value) || 1 })}
-              className="w-24 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-28 px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 shadow-soft text-center font-semibold"
               required
             />
             <select
               value={formData.relativeUnit}
               onChange={(e) => setFormData({ ...formData, relativeUnit: e.target.value as 'minutes' | 'hours' })}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 shadow-soft font-medium"
             >
               <option value="minutes">分钟后</option>
               <option value="hours">小时后</option>
@@ -156,9 +163,16 @@ export default function TaskForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium rounded-lg transition-colors"
+        className="w-full px-6 py-4 bg-gradient-primary hover:bg-gradient-primary-hover disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200 shadow-primary hover:shadow-primary-lg hover:scale-[1.02] active:scale-[0.98] disabled:hover:scale-100"
       >
-        {loading ? '创建中...' : '创建任务'}
+        {loading ? (
+          <span className="flex items-center justify-center gap-2">
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+            创建中...
+          </span>
+        ) : (
+          '创建任务'
+        )}
       </button>
     </form>
   );

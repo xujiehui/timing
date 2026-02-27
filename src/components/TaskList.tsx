@@ -1,7 +1,7 @@
 import { Task } from '../types';
 import { useStore } from '../store';
 import { formatDateTime, formatRemainingTime, getActionLabel, getStatusColor, getStatusLabel } from '../utils';
-import { X } from 'lucide-react';
+import { X, Clock, Calendar, Timer } from 'lucide-react';
 
 interface TaskListProps {
   tasks: Task[];
@@ -18,35 +18,51 @@ export default function TaskList({ tasks }: TaskListProps) {
 
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-        暂无任务，请创建一个新任务
+      <div className="text-center py-16 animate-fade-in">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary-100 dark:bg-primary-900/30 mb-4">
+          <Clock className="text-primary-600 dark:text-primary-400" size={40} />
+        </div>
+        <p className="text-lg font-medium text-gray-600 dark:text-gray-400 mb-2">
+          暂无任务
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-500">
+          请在上方创建一个新的定时任务
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-3">
-      {tasks.map((task) => (
+    <div className="space-y-4">
+      {tasks.map((task, index) => (
         <div
           key={task.id}
-          className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+          className="group flex items-center justify-between p-5 bg-white/50 dark:bg-gray-700/30 border-2 border-gray-200/50 dark:border-gray-600/50 rounded-xl hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-soft-lg transition-all duration-200 animate-slide-up"
+          style={{ animationDelay: `${index * 50}ms` }}
         >
           <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                {getActionLabel(task.action)}任务
-              </span>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="px-3 py-1.5 bg-gradient-primary rounded-lg">
+                <span className="text-base font-bold text-white">
+                  {getActionLabel(task.action)}
+                </span>
+              </div>
               <span
-                className={`px-2 py-1 text-xs font-medium rounded ${getStatusColor(task.status)}`}
+                className={`px-3 py-1 text-xs font-semibold rounded-lg ${getStatusColor(task.status)}`}
               >
                 {getStatusLabel(task.status)}
               </span>
             </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              <div>执行时间：{formatDateTime(task.execute_at)}</div>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <Calendar size={16} className="text-primary-500" />
+                <span>执行时间：<span className="font-medium text-gray-800 dark:text-gray-200">{formatDateTime(task.execute_at)}</span></span>
+              </div>
               {task.status === 'pending' && (
-                <div className="mt-1">
-                  剩余时间：<span className="font-medium text-blue-600 dark:text-blue-400">
+                <div className="flex items-center gap-2 text-sm">
+                  <Timer size={16} className="text-primary-500 animate-pulse-soft" />
+                  <span className="text-gray-600 dark:text-gray-400">剩余时间：</span>
+                  <span className="font-bold text-lg text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 px-3 py-1 rounded-lg">
                     {formatRemainingTime(task.remaining_seconds)}
                   </span>
                 </div>
@@ -56,7 +72,7 @@ export default function TaskList({ tasks }: TaskListProps) {
           {task.status === 'pending' && (
             <button
               onClick={() => handleCancel(task.id)}
-              className="ml-4 p-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+              className="ml-4 p-3 text-red-600 dark:text-red-400 hover:text-white hover:bg-red-500 dark:hover:bg-red-600 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95 shadow-soft hover:shadow-lg"
               title="取消任务"
             >
               <X size={20} />
