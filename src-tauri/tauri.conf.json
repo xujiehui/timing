@@ -1,5 +1,5 @@
 {
-  "productName": "定时关机管理",
+  "productName": "Timing Shutdown Manager",
   "version": "1.0.0",
   "identifier": "com.timing",
   "build": {
