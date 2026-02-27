@@ -1,6 +1,6 @@
 use crate::commands::TaskInfo;
 use crate::system;
-use chrono::{DateTime, Utc};
+use chrono::Utc;
 use std::collections::HashMap;
 use uuid::Uuid;
 

@@ -12,6 +12,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import sharp from 'sharp';
+import toIco from 'to-ico';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,8 +59,30 @@ async function generateIcons() {
       console.log(`✓ 生成 ${name} (${size}x${size})`);
     }
 
+    // 生成 ICO 文件（Windows 需要）
+    const icoPath = path.join(__dirname, 'icon.ico');
+    if (!fs.existsSync(icoPath)) {
+      console.log('\n开始生成 icon.ico 文件...');
+      const icoSizes = [16, 32, 48, 64, 128, 256];
+      const icoBuffers = [];
+      
+      for (const size of icoSizes) {
+        const buffer = await sharp(svgPath)
+          .resize(size, size)
+          .png()
+          .toBuffer();
+        icoBuffers.push(buffer);
+      }
+      
+      const icoBuffer = await toIco(icoBuffers);
+      fs.writeFileSync(icoPath, icoBuffer);
+      console.log(`✓ 生成 icon.ico (包含 ${icoSizes.length} 个尺寸)`);
+    } else {
+      console.log('\n⏭ 跳过 icon.ico (文件已存在)');
+    }
+
     console.log('\n图标生成完成！');
-    console.log('注意: ICO 和 ICNS 文件需要额外的工具生成，请参考 README.md');
+    console.log('注意: ICNS 文件需要额外的工具生成，请参考 README.md');
     
   } catch (error) {
     console.error('生成图标时出错:', error.message);

@@ -11,6 +11,7 @@ use scheduler::TaskScheduler;
 use storage::{AppSettings, load_settings, save_settings};
 use std::sync::Arc;
 use tauri::{Manager, State, AppHandle};
+use tauri::menu::{Menu, MenuItem};
 use tauri_plugin_notification::NotificationBuilder;
 use tokio::sync::Mutex;
 
@@ -141,13 +142,17 @@ fn setup_tray(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
         }
     };
 
+    // 创建菜单项
+    let show_item = MenuItem::with_id(app_handle, "show", "显示窗口", true, None::<&str>)?;
+    let quit_item = MenuItem::with_id(app_handle, "quit", "退出", true, None::<&str>)?;
+    
+    // 创建菜单
+    let menu = Menu::with_items(app_handle, &[&show_item, &quit_item])?;
+
     let _tray = tauri::tray::TrayIconBuilder::new()
         .icon(app.default_window_icon().unwrap().clone())
         .tooltip("定时关机管理")
-        .menu(tauri::tray::TrayIconMenuBuilder::new()
-            .item(tauri::tray::TrayIconMenuItemBuilder::new("显示窗口").id("show").build(app_handle.clone())?)
-            .item(tauri::tray::TrayIconMenuItemBuilder::new("退出").id("quit").build(app_handle.clone())?)
-            .build()?)
+        .menu(&menu)
         .on_menu_event(move |_app, event| {
             match event.id.as_ref() {
                 "show" => show_window(),
@@ -173,8 +178,8 @@ fn setup_tray(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn send_notification(app: &AppHandle, message: &str) {
-    let _ = NotificationBuilder::new()
+    let _ = NotificationBuilder::new(app.clone())
         .title("定时任务提醒")
         .body(message)
-        .build(app);
+        .show();
 }
