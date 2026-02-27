@@ -78,6 +78,7 @@ jobs:
         with:
           name: ${{ matrix.platform }}-${{ matrix.rust-target }}
           path: |
-            src-tauri/target/${{ matrix.rust-target }}/release/bundle/**
+            src-tauri/target/*/release/bundle/**
+            src-tauri/target/release/bundle/**
           if-no-files-found: ignore
           retention-days: 30
