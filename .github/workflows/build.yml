@@ -58,9 +58,6 @@ jobs:
       - name: Install frontend dependencies
         run: npm install
 
-      - name: Build frontend
-        run: npm run build
-
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         env:
@@ -73,6 +70,7 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
+          release: ${{ github.event_name == 'release' }}
           
       - name: Upload artifacts
         if: github.event_name != 'release'

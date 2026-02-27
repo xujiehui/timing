@@ -8,21 +8,16 @@
  * 运行: node generate-icons.js
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import sharp from 'sharp';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function generateIcons() {
   try {
-    // 检查是否安装了 sharp
-    let sharp;
-    try {
-      sharp = require('sharp');
-    } catch (e) {
-      console.error('错误: 未找到 sharp 库');
-      console.log('请先安装: npm install sharp --save-dev');
-      process.exit(1);
-    }
-
     const svgPath = path.join(__dirname, 'icon.svg');
     
     if (!fs.existsSync(svgPath)) {
@@ -37,10 +32,25 @@ async function generateIcons() {
       { name: 'icon.png', size: 64 },
     ];
 
-    console.log('开始生成图标...');
-
+    // 检查哪些图标需要生成
+    const iconsToGenerate = [];
     for (const { name, size } of sizes) {
       const outputPath = path.join(__dirname, name);
+      if (!fs.existsSync(outputPath)) {
+        iconsToGenerate.push({ name, size, outputPath });
+      } else {
+        console.log(`⏭ 跳过 ${name} (文件已存在)`);
+      }
+    }
+
+    if (iconsToGenerate.length === 0) {
+      console.log('所有图标文件已存在，无需重新生成。');
+      return;
+    }
+
+    console.log(`开始生成 ${iconsToGenerate.length} 个图标...`);
+
+    for (const { name, size, outputPath } of iconsToGenerate) {
       await sharp(svgPath)
         .resize(size, size)
         .png()
