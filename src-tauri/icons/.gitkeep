@@ -1,0 +1,8 @@
+# 图标文件目录
+# 请在此目录下放置应用图标文件：
+# - icon.png (系统托盘图标)
+# - 32x32.png
+# - 128x128.png
+# - 128x128@2x.png
+# - icon.icns (macOS)
+# - icon.ico (Windows)
