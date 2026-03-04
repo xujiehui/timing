@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { Button, Alert, Tag } from '@arco-design/web-react';
+import { IconSettings, IconClockCircle, IconCloseCircle } from '@arco-design/web-react/icon';
 import { useStore } from './store';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import Settings from './components/Settings';
-import { Settings as SettingsIcon, Clock } from 'lucide-react';
+import { AppCard } from './components/AppCard';
 
 function App() {
   const { fetchTasks, tasks, error } = useStore();
@@ -19,67 +21,58 @@ function App() {
   }, [fetchTasks]);
 
   return (
-    <div className="min-h-screen bg-gradient-light dark:bg-gradient-dark transition-colors duration-300">
-      {/* 背景装饰 */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary-200/20 dark:bg-primary-800/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-300/20 dark:bg-primary-700/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
-      </div>
-
-      <div className="relative max-w-5xl mx-auto px-6 py-8">
+    <div className="min-h-screen bg-background transition-colors duration-150">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex flex-col gap-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 animate-fade-in">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-gradient-primary rounded-xl shadow-primary">
-              <Clock className="text-white" size={28} />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary rounded-lg">
+              <IconClockCircle className="text-primary-foreground" style={{ fontSize: 20 }} />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-semibold text-foreground">
                 定时关机管理
               </h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              <p className="text-sm text-muted-foreground mt-0.5">
                 轻松管理您的系统定时任务
               </p>
             </div>
           </div>
-          <button
+          <Button
+            type="text"
+            shape="circle"
             onClick={() => setSettingsOpen(true)}
-            className="p-3 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/50 dark:hover:bg-gray-800/50 rounded-xl transition-all duration-200 hover:scale-105"
             title="设置"
-          >
-            <SettingsIcon size={22} />
-          </button>
+            aria-label="打开设置"
+            icon={<IconSettings />}
+          />
         </div>
 
         {/* Error Message */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 rounded-lg text-red-700 dark:text-red-400 animate-slide-up shadow-soft">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse-soft"></div>
-              <span className="font-medium">{error}</span>
-            </div>
-          </div>
+          <Alert
+            type="error"
+            content={error}
+            icon={<IconCloseCircle />}
+            closable
+            style={{ marginBottom: 16 }}
+          />
         )}
 
         {/* Task Form */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-soft-lg p-8 mb-8 animate-scale-in border border-white/50 dark:border-gray-700/50">
+        <AppCard>
           <TaskForm />
-        </div>
+        </AppCard>
 
         {/* Task List */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-soft-lg p-8 animate-scale-in border border-white/50 dark:border-gray-700/50">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              当前任务列表
-            </h2>
-            {tasks.length > 0 && (
-              <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm font-medium rounded-full">
-                {tasks.length} 个任务
-              </span>
-            )}
-          </div>
+        <AppCard
+          title="当前任务列表"
+          actions={tasks.length > 0 && (
+            <Tag color="gray">{tasks.length} 个任务</Tag>
+          )}
+        >
           <TaskList tasks={tasks} />
-        </div>
+        </AppCard>
       </div>
 
       <Settings isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />

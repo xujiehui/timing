@@ -1,7 +1,10 @@
+import { useState } from 'react';
+import { Card, Tag, Button, Modal } from '@arco-design/web-react';
+import { IconClose, IconClockCircle, IconCalendar, IconExclamationCircle } from '@arco-design/web-react/icon';
 import { Task } from '../types';
 import { useStore } from '../store';
-import { formatDateTime, formatRemainingTime, getActionLabel, getStatusColor, getStatusLabel } from '../utils';
-import { X, Clock, Calendar, Timer } from 'lucide-react';
+import { formatDateTime, formatRemainingTime, getActionLabel, getStatusLabel } from '../utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface TaskListProps {
   tasks: Task[];
@@ -9,77 +12,159 @@ interface TaskListProps {
 
 export default function TaskList({ tasks }: TaskListProps) {
   const { cancelTask } = useStore();
+  const { toast } = useToast();
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [taskToCancel, setTaskToCancel] = useState<string | null>(null);
 
-  const handleCancel = async (taskId: string) => {
-    if (confirm('确定要取消这个任务吗？')) {
-      await cancelTask(taskId);
+  const handleCancelClick = (taskId: string) => {
+    setTaskToCancel(taskId);
+    setCancelDialogOpen(true);
+  };
+
+  const handleCancelConfirm = async () => {
+    if (taskToCancel) {
+      try {
+        await cancelTask(taskToCancel);
+        toast({
+          variant: "success",
+          title: "任务已取消",
+          description: "定时任务已成功取消",
+        });
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "取消失败",
+          description: error instanceof Error ? error.message : '未知错误',
+        });
+      }
+      setCancelDialogOpen(false);
+      setTaskToCancel(null);
+    }
+  };
+
+  const getStatusColor = (status: string): string => {
+    switch (status) {
+      case 'pending':
+        return 'orange';
+      case 'completed':
+        return 'green';
+      case 'cancelled':
+        return 'gray';
+      default:
+        return 'blue';
     }
   };
 
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-16 animate-fade-in">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary-100 dark:bg-primary-900/30 mb-4">
-          <Clock className="text-primary-600 dark:text-primary-400" size={40} />
+      <div className="text-center py-16">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green/10 mb-4">
+          <IconClockCircle className="text-green" style={{ fontSize: 32 }} />
         </div>
-        <p className="text-lg font-medium text-gray-600 dark:text-gray-400 mb-2">
+        <h3 className="text-lg font-semibold text-foreground mb-1">
           暂无任务
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-500">
+        </h3>
+        <p className="text-sm text-muted-foreground">
           请在上方创建一个新的定时任务
         </p>
       </div>
     );
   }
 
+  const taskToCancelInfo = tasks.find(t => t.id === taskToCancel);
+
+  const getStatusDotColor = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return 'bg-orange';
+      case 'completed':
+        return 'bg-green';
+      case 'cancelled':
+        return 'bg-muted';
+      default:
+        return 'bg-muted';
+    }
+  };
+
   return (
-    <div className="space-y-4">
-      {tasks.map((task, index) => (
-        <div
-          key={task.id}
-          className="group flex items-center justify-between p-5 bg-white/50 dark:bg-gray-700/30 border-2 border-gray-200/50 dark:border-gray-600/50 rounded-xl hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-soft-lg transition-all duration-200 animate-slide-up"
-          style={{ animationDelay: `${index * 50}ms` }}
-        >
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="px-3 py-1.5 bg-gradient-primary rounded-lg">
-                <span className="text-base font-bold text-white">
+    <>
+      <div className="space-y-3">
+        {tasks.map((task) => (
+          <Card
+            key={task.id}
+            className="group flex flex-col sm:flex-row items-start sm:items-center justify-between hover:border-green transition-colors hover:shadow-sm"
+          >
+            <div className="flex-1 p-4 w-full">
+              <div className="flex items-center gap-2.5 mb-2.5">
+                <span className="text-sm font-medium text-foreground">
                   {getActionLabel(task.action)}
                 </span>
-              </div>
-              <span
-                className={`px-3 py-1 text-xs font-semibold rounded-lg ${getStatusColor(task.status)}`}
-              >
-                {getStatusLabel(task.status)}
-              </span>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                <Calendar size={16} className="text-primary-500" />
-                <span>执行时间：<span className="font-medium text-gray-800 dark:text-gray-200">{formatDateTime(task.execute_at)}</span></span>
-              </div>
-              {task.status === 'pending' && (
-                <div className="flex items-center gap-2 text-sm">
-                  <Timer size={16} className="text-primary-500 animate-pulse-soft" />
-                  <span className="text-gray-600 dark:text-gray-400">剩余时间：</span>
-                  <span className="font-bold text-lg text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 px-3 py-1 rounded-lg">
-                    {formatRemainingTime(task.remaining_seconds)}
+                <div className="flex items-center gap-1.5">
+                  <div className={`w-2 h-2 rounded-full ${getStatusDotColor(task.status)}`} />
+                  <span className="text-xs text-muted-foreground">
+                    {getStatusLabel(task.status)}
                   </span>
                 </div>
-              )}
+              </div>
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <IconCalendar style={{ fontSize: 14 }} className="text-green flex-shrink-0" />
+                  <span className="font-mono text-xs">
+                    {formatDateTime(task.execute_at)}
+                  </span>
+                </div>
+                {task.status === 'pending' && task.remaining_seconds > 0 && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <IconClockCircle style={{ fontSize: 14 }} className="text-green flex-shrink-0" />
+                    <span className="text-muted-foreground text-xs">剩余：</span>
+                    <span className="font-mono font-semibold text-base text-green">
+                      {formatRemainingTime(task.remaining_seconds)}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
+            {task.status === 'pending' && (
+              <div className="p-4 sm:p-4 sm:pl-0 w-full sm:w-auto border-t sm:border-t-0 sm:border-l border-border">
+                <Button
+                  type="text"
+                  shape="circle"
+                  size="small"
+                  onClick={() => handleCancelClick(task.id)}
+                  title="取消任务"
+                  aria-label={`取消任务：${getActionLabel(task.action)}`}
+                  icon={<IconClose />}
+                  style={{ color: 'var(--color-text-2)' }}
+                />
+              </div>
+            )}
+          </Card>
+        ))}
+      </div>
+
+      <Modal
+        visible={cancelDialogOpen}
+        onOk={handleCancelConfirm}
+        onCancel={() => setCancelDialogOpen(false)}
+        title={
+          <div className="flex items-center gap-2">
+            <IconExclamationCircle style={{ color: 'var(--color-danger)', fontSize: 20 }} />
+            确认取消任务
           </div>
-          {task.status === 'pending' && (
-            <button
-              onClick={() => handleCancel(task.id)}
-              className="ml-4 p-3 text-red-600 dark:text-red-400 hover:text-white hover:bg-red-500 dark:hover:bg-red-600 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95 shadow-soft hover:shadow-lg"
-              title="取消任务"
-            >
-              <X size={20} />
-            </button>
-          )}
-        </div>
-      ))}
-    </div>
+        }
+        okText="确认取消"
+        cancelText="取消"
+        okButtonProps={{ status: 'danger' }}
+      >
+        {taskToCancelInfo && (
+          <div>
+            <p>确定要取消这个定时任务吗？</p>
+            <p className="font-medium text-foreground mt-2">
+              {getActionLabel(taskToCancelInfo.action)} - {formatDateTime(taskToCancelInfo.execute_at)}
+            </p>
+          </div>
+        )}
+      </Modal>
+    </>
   );
 }
