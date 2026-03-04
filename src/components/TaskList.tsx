@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Tag, Button, Modal } from '@arco-design/web-react';
+import { Card, Button, Modal } from '@arco-design/web-react';
 import { IconClose, IconClockCircle, IconCalendar, IconExclamationCircle } from '@arco-design/web-react/icon';
 import { Task } from '../types';
 import { useStore } from '../store';
@@ -39,19 +39,6 @@ export default function TaskList({ tasks }: TaskListProps) {
       }
       setCancelDialogOpen(false);
       setTaskToCancel(null);
-    }
-  };
-
-  const getStatusColor = (status: string): string => {
-    switch (status) {
-      case 'pending':
-        return 'orange';
-      case 'completed':
-        return 'green';
-      case 'cancelled':
-        return 'gray';
-      default:
-        return 'blue';
     }
   };
 
