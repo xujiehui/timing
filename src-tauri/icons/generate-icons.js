@@ -53,30 +53,53 @@ async function generateIcons() {
 
     for (const { name, size, outputPath } of iconsToGenerate) {
       await sharp(svgPath)
-        .resize(size, size)
-        .png()
+        .resize(size, size, {
+          fit: 'contain',
+          background: { r: 0, g: 0, b: 0, alpha: 0 },
+          kernel: 'lanczos3'
+        })
+        .ensureAlpha() // 强制确保 alpha 通道存在
+        .png({ 
+          quality: 100,
+          compressionLevel: 9,
+          adaptiveFiltering: true,
+          palette: false // 禁用调色板，强制使用 32 位 RGBA
+        })
         .toFile(outputPath);
       console.log(`✓ 生成 ${name} (${size}x${size})`);
     }
 
     // 生成 ICO 文件（Windows 需要）
+    // 注意：32px 应该放在第一位以获得最佳显示效果
     const icoPath = path.join(__dirname, 'icon.ico');
     if (!fs.existsSync(icoPath)) {
       console.log('\n开始生成 icon.ico 文件...');
-      const icoSizes = [16, 32, 48, 64, 128, 256];
+      // 确保 32px 在第一位，这是 Windows 显示的关键尺寸
+      const icoSizes = [32, 16, 48, 64, 128, 256];
       const icoBuffers = [];
       
       for (const size of icoSizes) {
         const buffer = await sharp(svgPath)
-          .resize(size, size)
-          .png()
+          .resize(size, size, {
+            fit: 'contain',
+            background: { r: 0, g: 0, b: 0, alpha: 0 },
+            kernel: 'lanczos3' // 使用 Lanczos3 算法获得最佳质量
+          })
+          .ensureAlpha() // 强制确保 alpha 通道存在
+          .png({ 
+            quality: 100,
+            compressionLevel: 9,
+            adaptiveFiltering: true,
+            palette: false // 禁用调色板，强制使用 32 位 RGBA
+          })
           .toBuffer();
+        // to-ico 接受 buffer 数组，会自动从 PNG 中读取尺寸
         icoBuffers.push(buffer);
       }
       
       const icoBuffer = await toIco(icoBuffers);
       fs.writeFileSync(icoPath, icoBuffer);
-      console.log(`✓ 生成 icon.ico (包含 ${icoSizes.length} 个尺寸)`);
+      console.log(`✓ 生成 icon.ico (包含 ${icoSizes.length} 个尺寸: ${icoSizes.join(', ')}px)`);
     } else {
       console.log('\n⏭ 跳过 icon.ico (文件已存在)');
     }
