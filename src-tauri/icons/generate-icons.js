@@ -75,7 +75,7 @@ async function generateIcons() {
     if (!fs.existsSync(icoPath)) {
       console.log('\n开始生成 icon.ico 文件...');
       // 确保 32px 在第一位，这是 Windows 显示的关键尺寸
-      const icoSizes = [32, 16, 48, 64, 128, 256];
+      const icoSizes = [128, 32, 16, 48, 64, 256];
       const icoBuffers = [];
       
       for (const size of icoSizes) {
