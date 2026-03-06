@@ -1,0 +1,21 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 极简风格时钟图标 - 定时管理应用 -->
+  <!-- 外圆 -->
+  <circle cx="256" cy="256" r="220" stroke="#3B82F6" stroke-width="24" fill="none"/>
+  <!-- 内圆装饰 -->
+  <circle cx="256" cy="256" r="180" stroke="#60A5FA" stroke-width="8" fill="none" opacity="0.3"/>
+  <!-- 12点位置标记 -->
+  <line x1="256" y1="60" x2="256" y2="100" stroke="#3B82F6" stroke-width="16" stroke-linecap="round"/>
+  <!-- 3点位置标记 -->
+  <line x1="452" y1="256" x2="412" y2="256" stroke="#3B82F6" stroke-width="16" stroke-linecap="round"/>
+  <!-- 6点位置标记 -->
+  <line x1="256" y1="452" x2="256" y2="412" stroke="#3B82F6" stroke-width="16" stroke-linecap="round"/>
+  <!-- 9点位置标记 -->
+  <line x1="60" y1="256" x2="100" y2="256" stroke="#3B82F6" stroke-width="16" stroke-linecap="round"/>
+  <!-- 时针 (指向3点) -->
+  <line x1="256" y1="256" x2="320" y2="256" stroke="#3B82F6" stroke-width="20" stroke-linecap="round"/>
+  <!-- 分针 (指向12点) -->
+  <line x1="256" y1="256" x2="256" y2="140" stroke="#60A5FA" stroke-width="16" stroke-linecap="round"/>
+  <!-- 中心点 -->
+  <circle cx="256" cy="256" r="16" fill="#3B82F6"/>
+</svg>
