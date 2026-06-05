@@ -150,40 +150,40 @@ const Features = () => {
   ];
 
   return (
-    <div className="py-16 md:py-24">
+    <div className="py-24 md:py-32">
       <div className="container">
-        <div className="text-center mb-16 md:mb-20">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground">
+        <div className="text-center mb-20 md:mb-24">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground">
             功能特性
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             功能强大，操作简单，满足您的各种定时任务需求
           </p>
         </div>
 
-        <div className="space-y-8 md:space-y-12">
+        <div className="space-y-10 md:space-y-12">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group flex flex-col md:flex-row gap-6 md:gap-8 items-start p-6 md:p-8 bg-card border border-border rounded-xl hover:border-primary/50 hover:shadow-lg transition-all duration-300"
+              className="group flex flex-col md:flex-row gap-8 md:gap-10 items-start p-8 md:p-10 bg-card/50 border border-border/50 rounded-2xl hover:border-primary/30 hover:bg-card hover:shadow-lg transition-all duration-300 hover-lift"
             >
               <div className="flex-shrink-0">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 text-primary rounded-xl flex items-center justify-center text-3xl md:text-4xl group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                <div className="w-20 h-20 md:w-24 md:h-24 bg-primary/5 text-primary rounded-2xl flex items-center justify-center text-4xl md:text-5xl group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-300">
                   {feature.icon}
                 </div>
               </div>
               <div className="flex-1">
-                <h2 className="text-2xl md:text-3xl font-semibold mb-3 text-foreground group-hover:text-primary transition-colors">
+                <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-foreground group-hover:text-primary transition-colors duration-200">
                   {feature.title}
                 </h2>
-                <p className="text-muted-foreground mb-5 text-base md:text-lg leading-relaxed">
+                <p className="text-muted-foreground mb-6 text-lg md:text-xl leading-relaxed">
                   {feature.description}
                 </p>
-                <ul className="space-y-2.5">
+                <ul className="space-y-3">
                   {feature.details.map((detail, idx) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      <span className="text-primary mt-1.5 font-bold">•</span>
-                      <span className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                    <li key={idx} className="flex items-start gap-4">
+                      <span className="text-primary mt-2 font-bold text-lg">•</span>
+                      <span className="text-base md:text-lg text-muted-foreground leading-relaxed">
                         {detail}
                       </span>
                     </li>
@@ -194,22 +194,22 @@ const Features = () => {
           ))}
         </div>
 
-        <div className="mt-20 md:mt-24 text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-foreground">
+        <div className="mt-32 md:mt-40 text-center">
+          <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-foreground">
             跨平台支持
           </h2>
-          <p className="text-muted-foreground mb-10 text-lg">
+          <p className="text-muted-foreground mb-12 text-xl md:text-2xl leading-relaxed">
             支持 Windows、macOS 和 Linux 三大主流操作系统
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <div className="px-6 py-3 bg-card border border-border rounded-xl hover:border-primary/50 hover:shadow-md transition-all">
-              <span className="font-medium text-foreground">Windows 10/11</span>
+          <div className="flex flex-wrap justify-center gap-5">
+            <div className="px-8 py-4 bg-card/50 border border-border/50 rounded-xl hover:border-primary/30 hover:bg-card hover:shadow-md transition-all duration-200 hover-lift">
+              <span className="font-medium text-lg text-foreground">Windows 10/11</span>
             </div>
-            <div className="px-6 py-3 bg-card border border-border rounded-xl hover:border-primary/50 hover:shadow-md transition-all">
-              <span className="font-medium text-foreground">macOS 10.15+</span>
+            <div className="px-8 py-4 bg-card/50 border border-border/50 rounded-xl hover:border-primary/30 hover:bg-card hover:shadow-md transition-all duration-200 hover-lift">
+              <span className="font-medium text-lg text-foreground">macOS 10.15+</span>
             </div>
-            <div className="px-6 py-3 bg-card border border-border rounded-xl hover:border-primary/50 hover:shadow-md transition-all">
-              <span className="font-medium text-foreground">Linux (主流发行版)</span>
+            <div className="px-8 py-4 bg-card/50 border border-border/50 rounded-xl hover:border-primary/30 hover:bg-card hover:shadow-md transition-all duration-200 hover-lift">
+              <span className="font-medium text-lg text-foreground">Linux (主流发行版)</span>
             </div>
           </div>
         </div>

@@ -19,11 +19,11 @@ const DownloadButton = ({ platform, children, href, className = '', variant = 'p
 
   // 根据 variant 应用不同的样式
   const variantStyles = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg',
-    secondary: 'bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl hover:-translate-y-0.5',
+    primary: 'gradient-primary text-primary-foreground hover:shadow-xl hover-lift',
+    secondary: 'bg-card text-primary border border-border hover:bg-accent hover:border-primary/30 hover-lift',
   };
 
-  const baseStyles = 'inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-200';
+  const baseStyles = 'inline-flex items-center justify-center px-8 py-4 rounded-xl font-medium transition-all duration-200 shadow-lg';
 
   return (
     <a

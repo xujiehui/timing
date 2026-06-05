@@ -62,27 +62,27 @@ const Download = () => {
   const currentPlatform = platforms.find((p) => p.id === platform) || platforms[0];
 
   return (
-    <div className="py-16 md:py-24">
+    <div className="py-24 md:py-32">
       <div className="container">
-        <div className="text-center mb-16 md:mb-20">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground">
+        <div className="text-center mb-20 md:mb-24">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground">
             下载安装
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             选择您的操作系统，下载对应版本的应用
           </p>
         </div>
 
         {/* 平台选择 */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-4 mb-16">
           {platforms.map((p) => (
             <button
               key={p.id}
               onClick={() => setPlatform(p.id)}
-              className={`px-8 py-3 rounded-xl font-medium transition-all ${
+              className={`px-10 py-4 rounded-xl font-medium text-lg transition-all duration-200 ${
                 platform === p.id
-                  ? 'bg-primary text-primary-foreground shadow-lg scale-105'
-                  : 'bg-card border border-border hover:bg-accent hover:border-primary/50'
+                  ? 'gradient-primary text-primary-foreground shadow-lg scale-105'
+                  : 'bg-card/50 border border-border/50 hover:bg-accent hover:border-primary/30 hover-lift'
               }`}
             >
               {p.name}
@@ -91,44 +91,44 @@ const Download = () => {
         </div>
 
         {/* 当前平台信息 */}
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-card border border-border rounded-xl p-8 md:p-10 shadow-lg">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-semibold mb-2">{currentPlatform.name}</h2>
-              <p className="text-muted-foreground mb-6">版本要求：{currentPlatform.version}</p>
-              <DownloadButton platform={currentPlatform.id} className="text-lg px-8 py-4" />
-              <p className="text-sm text-muted-foreground mt-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-card/50 border border-border/50 rounded-2xl p-10 md:p-12 shadow-lg hover-lift transition-all duration-300">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-semibold mb-3">{currentPlatform.name}</h2>
+              <p className="text-lg text-muted-foreground mb-8">版本要求：{currentPlatform.version}</p>
+              <DownloadButton platform={currentPlatform.id} className="text-lg px-10 py-4" />
+              <p className="text-base text-muted-foreground mt-6">
                 最新版本：<a
                   href="https://github.com/xujiehui/timing/releases/latest"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline"
+                  className="text-primary hover:underline transition-colors"
                 >
                   查看 GitHub Releases
                 </a>
               </p>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div>
-                <h3 className="text-lg font-semibold mb-3">系统要求</h3>
-                <ul className="space-y-2">
+                <h3 className="text-xl font-semibold mb-5">系统要求</h3>
+                <ul className="space-y-3">
                   {currentPlatform.requirements.map((req, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-primary mt-1">•</span>
-                      <span className="text-sm text-muted-foreground">{req}</span>
+                    <li key={idx} className="flex items-start gap-4">
+                      <span className="text-primary mt-1.5 font-bold text-lg">•</span>
+                      <span className="text-base text-muted-foreground leading-relaxed">{req}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold mb-3">安装步骤</h3>
-                <ol className="space-y-2">
+                <h3 className="text-xl font-semibold mb-5">安装步骤</h3>
+                <ol className="space-y-3">
                   {currentPlatform.installSteps.map((step, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-primary font-semibold">{idx + 1}.</span>
-                      <span className="text-sm text-muted-foreground">{step}</span>
+                    <li key={idx} className="flex items-start gap-4">
+                      <span className="text-primary font-semibold text-lg">{idx + 1}.</span>
+                      <span className="text-base text-muted-foreground leading-relaxed">{step}</span>
                     </li>
                   ))}
                 </ol>
@@ -138,13 +138,25 @@ const Download = () => {
         </div>
 
         {/* 注意事项 */}
-        <div className="max-w-3xl mx-auto mt-12 p-6 md:p-8 bg-muted/50 border border-border rounded-xl">
-          <h3 className="text-lg font-semibold mb-3">注意事项</h3>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>• 执行系统操作（关机、重启等）需要管理员/root权限</li>
-            <li>• 不同平台对某些操作的支持可能不同</li>
-            <li>• 建议在测试环境中先验证功能</li>
-            <li>• 如有问题，请查看 <a href="/docs" className="text-primary hover:underline">文档</a> 或提交 <a href="https://github.com/xujiehui/timing/issues" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Issue</a></li>
+        <div className="max-w-4xl mx-auto mt-16 p-8 md:p-10 bg-muted/30 border border-border/50 rounded-2xl">
+          <h3 className="text-xl font-semibold mb-5">注意事项</h3>
+          <ul className="space-y-3 text-base text-muted-foreground">
+            <li className="flex items-start gap-4">
+              <span className="text-primary mt-1.5 font-bold">•</span>
+              <span>执行系统操作（关机、重启等）需要管理员/root权限</span>
+            </li>
+            <li className="flex items-start gap-4">
+              <span className="text-primary mt-1.5 font-bold">•</span>
+              <span>不同平台对某些操作的支持可能不同</span>
+            </li>
+            <li className="flex items-start gap-4">
+              <span className="text-primary mt-1.5 font-bold">•</span>
+              <span>建议在测试环境中先验证功能</span>
+            </li>
+            <li className="flex items-start gap-4">
+              <span className="text-primary mt-1.5 font-bold">•</span>
+              <span>如有问题，请查看 <a href="/docs" className="text-primary hover:underline transition-colors">文档</a> 或提交 <a href="https://github.com/xujiehui/timing/issues" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline transition-colors">Issue</a></span>
+            </li>
           </ul>
         </div>
       </div>

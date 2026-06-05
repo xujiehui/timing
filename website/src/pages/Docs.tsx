@@ -127,27 +127,27 @@ const Docs = () => {
   ];
 
   return (
-    <div className="py-16 md:py-24">
-      <div className="container max-w-4xl">
-        <div className="text-center mb-16 md:mb-20">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground">
+    <div className="py-24 md:py-32">
+      <div className="container max-w-5xl">
+        <div className="text-center mb-20 md:mb-24">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground">
             使用文档
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground">
+          <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
             详细的使用指南和常见问题解答
           </p>
         </div>
 
         {/* 使用指南 */}
-        <div className="space-y-8 md:space-y-12 mb-16">
+        <div className="space-y-10 md:space-y-12 mb-20">
           {sections.map((section, idx) => (
-            <div key={idx} className="bg-card border border-border rounded-xl p-6 md:p-8 hover:shadow-lg transition-shadow">
-              <h2 className="text-2xl font-semibold mb-6">{section.title}</h2>
-              <div className="space-y-6">
+            <div key={idx} className="bg-card/50 border border-border/50 rounded-2xl p-8 md:p-10 hover:bg-card hover:shadow-lg transition-all duration-300 hover-lift">
+              <h2 className="text-3xl md:text-4xl font-semibold mb-8">{section.title}</h2>
+              <div className="space-y-8">
                 {section.content.map((item, itemIdx) => (
                   <div key={itemIdx}>
-                    <h3 className="text-lg font-medium mb-2">{item.subtitle}</h3>
-                    <p className="text-muted-foreground whitespace-pre-line">{item.text}</p>
+                    <h3 className="text-xl font-semibold mb-3 text-foreground">{item.subtitle}</h3>
+                    <p className="text-base md:text-lg text-muted-foreground whitespace-pre-line leading-relaxed">{item.text}</p>
                   </div>
                 ))}
               </div>
@@ -156,39 +156,72 @@ const Docs = () => {
         </div>
 
         {/* 常见问题 */}
-        <div className="bg-card border border-border rounded-xl p-6 md:p-8 shadow-lg">
-          <h2 className="text-2xl font-semibold mb-6">常见问题 (FAQ)</h2>
-          <div className="space-y-6">
+        <div className="bg-card/50 border border-border/50 rounded-2xl p-8 md:p-10 shadow-lg hover-lift transition-all duration-300">
+          <h2 className="text-3xl md:text-4xl font-semibold mb-8">常见问题 (FAQ)</h2>
+          <div className="space-y-8">
             {faqs.map((faq, idx) => (
-              <div key={idx}>
-                <h3 className="text-lg font-medium mb-2">{faq.question}</h3>
-                <p className="text-muted-foreground">{faq.answer}</p>
+              <div key={idx} className="pb-8 border-b border-border/50 last:border-0 last:pb-0">
+                <h3 className="text-xl font-semibold mb-3 text-foreground">{faq.question}</h3>
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed">{faq.answer}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* 故障排除 */}
-        <div className="mt-12 bg-muted/50 border border-border rounded-xl p-6 md:p-8">
-          <h2 className="text-2xl font-semibold mb-6">故障排除</h2>
-          <div className="space-y-4 text-sm text-muted-foreground">
+        <div className="mt-16 bg-muted/30 border border-border/50 rounded-2xl p-8 md:p-10">
+          <h2 className="text-3xl md:text-4xl font-semibold mb-8">故障排除</h2>
+          <div className="space-y-6 text-base md:text-lg text-muted-foreground">
             <div>
-              <h3 className="font-medium mb-1">任务没有执行</h3>
-              <p>• 检查应用是否正在运行</p>
-              <p>• 确认系统时间是否正确</p>
-              <p>• 检查是否有足够的系统权限</p>
+              <h3 className="font-semibold mb-3 text-foreground">任务没有执行</h3>
+              <ul className="space-y-2">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1.5 font-bold">•</span>
+                  <span>检查应用是否正在运行</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1.5 font-bold">•</span>
+                  <span>确认系统时间是否正确</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1.5 font-bold">•</span>
+                  <span>检查是否有足够的系统权限</span>
+                </li>
+              </ul>
             </div>
             <div>
-              <h3 className="font-medium mb-1">无法执行系统操作</h3>
-              <p>• 确保以管理员/root权限运行应用</p>
-              <p>• 检查系统是否允许该操作</p>
-              <p>• 查看应用日志了解详细错误信息</p>
+              <h3 className="font-semibold mb-3 text-foreground">无法执行系统操作</h3>
+              <ul className="space-y-2">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1.5 font-bold">•</span>
+                  <span>确保以管理员/root权限运行应用</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1.5 font-bold">•</span>
+                  <span>检查系统是否允许该操作</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1.5 font-bold">•</span>
+                  <span>查看应用日志了解详细错误信息</span>
+                </li>
+              </ul>
             </div>
             <div>
-              <h3 className="font-medium mb-1">应用无法启动</h3>
-              <p>• 检查系统是否满足最低要求</p>
-              <p>• 重新安装应用</p>
-              <p>• 查看错误日志或提交 Issue</p>
+              <h3 className="font-semibold mb-3 text-foreground">应用无法启动</h3>
+              <ul className="space-y-2">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1.5 font-bold">•</span>
+                  <span>检查系统是否满足最低要求</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1.5 font-bold">•</span>
+                  <span>重新安装应用</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary mt-1.5 font-bold">•</span>
+                  <span>查看错误日志或提交 Issue</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
